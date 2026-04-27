@@ -255,6 +255,12 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
   .dm-box{border-radius:16px;max-width:440px;}
   .dm-footer{padding:14px 24px 20px;}
   .bottom-bar{display:none;}
+  .wait-card{padding:24px 28px;}
+  .wait-card-title{font-size:14px;}
+  .wait-row{gap:10px;}
+  .wait-row-top{flex:0 0 180px;}
+  .wait-checks{flex:1;}
+
   .audio-wrap{display:none;}
   .topbar-right{gap:14px;}
   .topbar-btn-manage,.topbar-audio{display:flex!important;}
@@ -262,6 +268,50 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
 }
 .topbar-btn-manage,.topbar-audio{display:none;align-items:center;}
 .topbar-btn-manage .btn-manage{display:flex;}
+
+/* ══ WAITING LIST ══ */
+.wait-card{background:var(--white);border:1px solid var(--bl);border-radius:var(--r);padding:16px;box-shadow:var(--sh);}
+.wait-card-title{font-size:13px;font-weight:600;color:var(--g900);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.wait-card-title svg{width:14px;height:14px;stroke:var(--amber-dark);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.wait-add-row{display:flex;gap:8px;margin-bottom:14px;}
+.wait-add-row input{flex:1;height:40px;border:1px solid var(--g200);border-radius:var(--r-sm);padding:0 12px;font-size:14px;font-family:var(--font);color:var(--g900);outline:none;-webkit-appearance:none;}
+.wait-add-row input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(239,159,39,0.12);}
+.wait-add-btn{height:40px;padding:0 14px;background:var(--amber);color:white;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.wait-add-btn:hover{background:var(--amber-dark);}
+.wait-list{display:flex;flex-direction:column;gap:8px;}
+.wait-row{background:var(--g50);border:1px solid var(--bl);border-radius:var(--r-sm);padding:6px 10px;display:flex;flex-direction:row;align-items:center;gap:8px;flex-wrap:wrap;}
+.wait-row.outro-exame{border-color:rgba(124,58,237,0.3);background:#F5F3FF;}
+.wait-row.bexiga{border-color:rgba(37,99,235,0.3);background:var(--blue-light);}
+.wait-row-top{display:flex;align-items:center;gap:6px;flex:0 0 140px;min-width:0;}
+.wait-id{font-size:13px;font-weight:600;color:var(--g900);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wait-del-btn{width:22px;height:22px;border:none;background:none;color:var(--g400);font-size:15px;cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.wait-del-btn:hover{background:var(--red-light);color:var(--red);}
+.wait-checks{display:flex;gap:4px;flex-wrap:wrap;flex:1;}
+.check-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;border:1.5px solid var(--g200);background:var(--white);cursor:pointer;user-select:none;font-size:10px;font-weight:500;color:var(--g600);transition:all 0.15s;white-space:nowrap;}
+.check-dot{width:7px;height:7px;border-radius:50%;background:var(--g200);flex-shrink:0;transition:background 0.15s;}
+.check-pill.ench{border-color:var(--amber);background:var(--amber-light);color:var(--amber-dark);}
+.check-pill.ench .check-dot{background:var(--amber);}
+.check-pill.outro{border-color:#7C3AED;background:#F5F3FF;color:#5B21B6;}
+.check-pill.outro .check-dot{background:#7C3AED;}
+.check-pill.agua{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+.check-pill.agua .check-dot{background:var(--green);}
+.wait-go-btn{height:26px;padding:0 10px;background:var(--green);color:white;border:none;border-radius:var(--r-sm);font-size:11px;font-weight:600;font-family:var(--font);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0;}
+.wait-go-btn:hover{background:var(--green-dark);}
+.wait-go-btn svg{width:12px;height:12px;fill:none;stroke:white;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+.wait-empty{font-size:12px;color:var(--g400);text-align:center;padding:20px;border:1.5px dashed var(--g200);border-radius:var(--r-sm);}
+
+/* Painel waiting */
+.painel-wait{background:var(--card-dark);border:1px solid var(--bd-dark);border-radius:var(--r);padding:16px;width:100%;}
+.painel-wait-title{font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--td3);font-weight:500;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bd-dark);}
+.painel-wait-list{display:flex;flex-direction:column;gap:8px;}
+.painel-wait-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);}
+.painel-wait-id{font-size:14px;font-weight:600;color:var(--td);flex:1;}
+.painel-wait-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.painel-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap;}
+.painel-chip.ench{background:rgba(239,159,39,0.2);color:var(--amber);border:1px solid rgba(239,159,39,0.3);}
+.painel-chip.outro{background:rgba(124,58,237,0.2);color:#A78BFA;border:1px solid rgba(124,58,237,0.3);}
+.painel-chip.agua{background:rgba(29,158,117,0.2);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
+.painel-wait-empty{text-align:center;padding:20px;color:var(--td3);font-size:13px;}
 </style>
 </head>
 <body>
@@ -400,6 +450,21 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
         </div>
       </div>
 
+
+      <div class="wait-card">
+        <div class="wait-card-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Pacientes aguardando
+        </div>
+        <div class="wait-add-row">
+          <input type="text" id="inp-wait-id" placeholder="Iniciais / ID do paciente"/>
+          <button class="wait-add-btn" onclick="addWaiting()">+ Adicionar</button>
+        </div>
+        <div class="wait-list" id="wait-list">
+          <div class="wait-empty">Nenhum paciente na fila</div>
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="bottom-bar">
@@ -428,6 +493,13 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
 
       <div class="rooms-grid-p" id="rooms-grid-p"></div>
 
+      <div class="painel-wait">
+        <div class="painel-wait-title">Pacientes aguardando</div>
+        <div class="painel-wait-list" id="painel-wait-list">
+          <div class="painel-wait-empty">Nenhum paciente aguardando</div>
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="audio-wrap">
@@ -445,6 +517,7 @@ let audioEnabled=true, prevRoomState={}, currentTab='terminal';
 
 const DEFAULT_DOCTORS=['Amanda Tormin','Beatriz Borges','Fernanda Lauar','Fernando Costa','Hugo Gama','Lara Mori','Larissa Maia','Marcos Fiorotto','Murilo Eugênio','Olavo Nakamura','Poliana Parreira','Pedro Hasimoto','Pedro Paulo','Pedro Rios','Rafael Dangoni','Roberto Brasil','Túlio Gama','Veluma Teixeira','Victor Oliveira'];
 let doctorsList=[], tempDoctors=[];
+let waitingList=[];
 
 function now(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -541,7 +614,7 @@ function saveConfig(){
 function useDemoMode(){
   demoMode=true;document.getElementById('setup-modal').style.display='none';
   demoChannel=new BroadcastChannel('uso_painel');
-  demoChannel.onmessage=e=>{if(e.data.type==='state_update'){demoState=e.data.state;renderFromState(demoState);}};
+  demoChannel.onmessage=e=>{if(e.data.type==='state_update'){demoState=e.data.state;renderFromState(demoState);}if(e.data.type==='waiting_update'){waitingList=e.data.list;renderWaitingList();}};
   const saved=localStorage.getItem('uso_demo_state');
   if(saved) try{demoState=JSON.parse(saved);}catch(e){}
   setConnected(true,'Demo');renderFromState(demoState);
@@ -551,6 +624,7 @@ function initFirebase(url,key,project){
     if(!firebase.apps.length) firebase.initializeApp({apiKey:key,databaseURL:url,projectId:project});
     db=firebase.database();
     db.ref('uso/state').on('value',snap=>renderFromState(snap.val()||{}));
+    db.ref('uso/waiting').on('value',snap=>{waitingList=snap.val()||[];renderWaitingList();});
     db.ref('.info/connected').on('value',snap=>setConnected(!!snap.val(),snap.val()?'Online':'Reconectando...'));
   }catch(err){setConnected(false,'Erro');showToast('Erro Firebase: '+err.message);}
 }
@@ -658,6 +732,81 @@ function showAlert(msg){
   b.classList.add('show');setTimeout(()=>b.classList.remove('show'),6000);
 }
 
+
+// ── WAITING LIST ──────────────────────────────────────────
+function loadWaiting(){
+  const s=localStorage.getItem('uso_waiting');
+  waitingList=s?JSON.parse(s):[];
+  renderWaitingList();
+}
+function saveWaiting(){
+  localStorage.setItem('uso_waiting',JSON.stringify(waitingList));
+  syncWaitingToFirebase();
+}
+function syncWaitingToFirebase(){
+  if(db) db.ref('uso/waiting').set(waitingList);
+  if(demoMode&&demoChannel) demoChannel.postMessage({type:'waiting_update',list:waitingList});
+}
+function addWaiting(){
+  const inp=document.getElementById('inp-wait-id'),label=inp.value.trim();
+  if(!label){inp.focus();return;}
+  waitingList.push({id:Date.now(),label,enchendo:false,outro:false,aguardando:false});
+  inp.value='';saveWaiting();renderWaitingList();
+}
+function toggleCheck(id,field){
+  const p=waitingList.find(p=>p.id===id);if(!p)return;
+  p[field]=!p[field];saveWaiting();renderWaitingList();
+}
+function removeWaiting(id){
+  waitingList=waitingList.filter(p=>p.id!==id);saveWaiting();renderWaitingList();
+}
+function promoteWaiting(id){
+  const p=waitingList.find(p=>p.id===id);if(!p)return;
+  document.getElementById('inp-patient').value=p.label;
+  document.querySelector('.form-card').scrollIntoView({behavior:'smooth',block:'center'});
+  showToast('Preencha sala e médico e clique em Paciente pronto','green');
+}
+function renderWaitingList(){
+  const el=document.getElementById('wait-list');
+  if(!el)return;
+  if(!waitingList.length){el.innerHTML='<div class="wait-empty">Nenhum paciente na fila</div>';renderPainelWaiting();return;}
+  el.innerHTML=waitingList.map(p=>{
+    let rowCls='wait-row';
+    if(p.outro) rowCls+=' outro-exame';
+    else if(p.enchendo) rowCls+=' bexiga';
+    return `<div class="${rowCls}">
+      <div class="wait-row-top">
+        <div class="wait-id" title="${escHtml(p.label)}">${escHtml(p.label)}</div>
+        <button class="wait-del-btn" onclick="removeWaiting(${p.id})">×</button>
+      </div>
+      <div class="wait-checks">
+        <span class="check-pill${p.enchendo?' ench':''}" onclick="toggleCheck(${p.id},'enchendo')"><span class="check-dot"></span>Enchendo bexiga</span>
+        <span class="check-pill${p.outro?' outro':''}" onclick="toggleCheck(${p.id},'outro')"><span class="check-dot"></span>Em outro exame</span>
+        <span class="check-pill${p.aguardando?' agua':''}" onclick="toggleCheck(${p.id},'aguardando')"><span class="check-dot"></span>Aguardando sala</span>
+      </div>
+      <button class="wait-go-btn" onclick="promoteWaiting(${p.id})">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pronto
+      </button>
+    </div>`;
+  }).join('');
+  renderPainelWaiting();
+}
+function renderPainelWaiting(){
+  const el=document.getElementById('painel-wait-list');if(!el)return;
+  if(!waitingList.length){el.innerHTML='<div class="painel-wait-empty">Nenhum paciente aguardando</div>';return;}
+  el.innerHTML=waitingList.map(p=>{
+    let chips='';
+    if(p.enchendo) chips+=`<span class="painel-chip ench">🟡 Enchendo bexiga</span>`;
+    if(p.outro) chips+=`<span class="painel-chip outro">🟣 Em outro exame</span>`;
+    if(p.aguardando) chips+=`<span class="painel-chip agua">🟢 Aguardando sala</span>`;
+    if(!chips) chips=`<span style="font-size:11px;color:var(--td3)">Sem status</span>`;
+    return `<div class="painel-wait-row">
+      <div class="painel-wait-id">${escHtml(p.label)}</div>
+      <div class="painel-wait-chips">${chips}</div>
+    </div>`;
+  }).join('');
+}
+
 // ── ACTIONS ──
 function todayBrasilia(){
   return new Date().toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'});
@@ -749,10 +898,12 @@ window.addEventListener('load',()=>{
   document.getElementById('tb-audio').style.display='none';
   initFirebase(FB_CONFIG.databaseURL, FB_CONFIG.apiKey, FB_CONFIG.projectId);
   loadDoctors();
+  loadWaiting();
   renderFromState({});
 });
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('inp-patient').addEventListener('keydown',e=>{if(e.key==='Enter') signalReady();});
+  document.getElementById('inp-wait-id').addEventListener('keydown',e=>{if(e.key==='Enter') addWaiting();});
   document.getElementById('inp-new-doctor').addEventListener('keydown',e=>{if(e.key==='Enter') addDoctor();});
 });
 </script>
