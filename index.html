@@ -659,18 +659,35 @@ function showAlert(msg){
 }
 
 // ── ACTIONS ──
+function todayBrasilia(){
+  return new Date().toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'});
+}
+
 function writeState(roomId, entry){
+  const isDone=!!entry._done; if(isDone) delete entry._done;
   if(demoMode){
     demoState.rooms=demoState.rooms||{};
     demoState.rooms[roomId]=entry;
-    if(entry._done){demoState.done=(demoState.done||0)+1;delete entry._done;}
+    if(isDone){
+      const today=todayBrasilia();
+      if(demoState.doneDate!==today){demoState.done=0;demoState.doneDate=today;}
+      demoState.done=(demoState.done||0)+1;
+    }
     localStorage.setItem('uso_demo_state',JSON.stringify(demoState));
     demoChannel.postMessage({type:'state_update',state:demoState});
     renderFromState(demoState);
   } else if(db){
-    if(entry._done){
-      db.ref('uso/state/done').transaction(n=>(n||0)+1);
-      delete entry._done;
+    if(isDone){
+      const today=todayBrasilia();
+      db.ref('uso/state/doneDate').once('value',snap=>{
+        const savedDate=snap.val();
+        if(savedDate!==today){
+          db.ref('uso/state/done').set(1);
+          db.ref('uso/state/doneDate').set(today);
+        } else {
+          db.ref('uso/state/done').transaction(n=>(n||0)+1);
+        }
+      });
     }
     db.ref(`uso/state/rooms/${roomId}`).set(entry);
   } else {
