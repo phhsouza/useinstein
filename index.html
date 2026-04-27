@@ -730,7 +730,7 @@ window.addEventListener('load',()=>{
   document.getElementById('setup-modal').style.display='none';
   document.getElementById('tb-manage').style.display='flex';
   document.getElementById('tb-audio').style.display='none';
-  initFirebase(FB_CONFIG.apiKey, FB_CONFIG.databaseURL, FB_CONFIG.projectId);
+  initFirebase(FB_CONFIG.databaseURL, FB_CONFIG.apiKey, FB_CONFIG.projectId);
   loadDoctors();
   renderFromState({});
 });
