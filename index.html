@@ -312,6 +312,48 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
 .painel-chip.outro{background:rgba(124,58,237,0.2);color:#A78BFA;border:1px solid rgba(124,58,237,0.3);}
 .painel-chip.agua{background:rgba(29,158,117,0.2);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
 .painel-wait-empty{text-align:center;padding:20px;color:var(--td3);font-size:13px;}
+
+/* ══ RELATÓRIOS ══ */
+.r-wrap{background:var(--g50);flex:1;padding:16px;overflow-y:auto;}
+.r-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:14px;}
+.r-header-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.r-title{font-size:15px;font-weight:600;color:var(--g900);}
+.r-subtitle{font-size:12px;color:var(--g400);margin-top:2px;}
+.r-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.r-filter{height:34px;border:1px solid var(--g200);border-radius:var(--r-sm);padding:0 10px;font-size:13px;font-family:var(--font);color:var(--g900);background:var(--white);outline:none;-webkit-appearance:none;cursor:pointer;}
+.btn-export{height:34px;padding:0 14px;background:var(--white);border:1px solid var(--bl);border-radius:var(--r-sm);font-size:13px;font-weight:500;font-family:var(--font);color:var(--g600);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s;}
+.btn-export:hover{background:var(--g100);}
+.btn-export svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.btn-clear-r{height:34px;padding:0 14px;background:var(--white);border:1px solid var(--red-light);border-radius:var(--r-sm);font-size:13px;font-weight:500;font-family:var(--font);color:var(--red);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s;}
+.btn-clear-r:hover{background:var(--red-light);}
+.r-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.kpi-card{background:var(--white);border:1px solid var(--bl);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);}
+.kpi-val{font-size:24px;font-weight:600;font-family:var(--mono);color:var(--g900);line-height:1;}
+.kpi-val.green{color:var(--green);}
+.kpi-val.blue{color:var(--blue);}
+.kpi-val.amber{color:var(--amber-dark);}
+.kpi-val.purple{color:#7C3AED;}
+.kpi-lbl{font-size:11px;color:var(--g400);margin-top:5px;text-transform:uppercase;letter-spacing:0.04em;}
+.table-wrap{background:var(--white);border:1px solid var(--bl);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:var(--g50);padding:9px 12px;text-align:left;font-size:10px;font-weight:500;color:var(--g400);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--bl);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--bl);transition:background 0.1s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--g50);}
+tbody td{padding:10px 12px;font-size:13px;color:var(--g900);vertical-align:middle;white-space:nowrap;}
+.td-mono{font-family:var(--mono);font-size:11px;color:var(--g400);}
+.td-chip{display:inline-block;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500;background:var(--g100);color:var(--g600);}
+.td-chip.green{background:var(--green-light);color:var(--green-dark);}
+.td-chip.blue{background:var(--blue-light);color:var(--blue-dark);}
+.td-chip.amber{background:var(--amber-light);color:var(--amber-dark);}
+.td-chip.purple{background:#F5F3FF;color:#5B21B6;}
+.t-empty{text-align:center;padding:40px;color:var(--g400);font-size:13px;}
+@media(min-width:768px){
+  .r-wrap{padding:28px 32px;}
+  .r-kpis{grid-template-columns:repeat(4,1fr);gap:12px;}
+  .kpi-val{font-size:26px;}
+}
 </style>
 </head>
 <body>
@@ -399,6 +441,10 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
     <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
     Painel Médico
     <span class="tab-badge" id="tab-badge" style="display:none">0</span>
+  </button>
+  <button class="tab-btn" id="tab-relatorios" onclick="switchTab('relatorios')">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+    Relatórios
   </button>
 </div>
 
@@ -507,6 +553,43 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
   </div>
 </div>
 
+<!-- ══ RELATÓRIOS ══ -->
+<div class="screen" id="screen-relatorios">
+  <div class="r-wrap">
+    <div class="r-inner">
+      <div class="r-header-row">
+        <div>
+          <div class="r-title">Relatório de Exames</div>
+          <div class="r-subtitle" id="r-subtitle">0 registros</div>
+        </div>
+        <div class="r-actions">
+          <select class="r-filter" id="r-filter-medico" onchange="renderReport()"><option value="">Todos os médicos</option></select>
+          <select class="r-filter" id="r-filter-sala" onchange="renderReport()"><option value="">Todas as salas</option><option value="Sala 1">Sala 1</option><option value="Sala 2">Sala 2</option><option value="Sala 3">Sala 3</option><option value="NUFIG">NUFIG</option></select>
+          <select class="r-filter" id="r-filter-data" onchange="renderReport()"><option value="">Todos os dias</option></select>
+          <button class="btn-export" onclick="exportCSV()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV</button>
+          <button class="btn-clear-r" onclick="clearReport()">🗑 Limpar</button>
+        </div>
+      </div>
+      <div class="r-kpis">
+        <div class="kpi-card"><div class="kpi-val green" id="kpi-total">0</div><div class="kpi-lbl">Total de exames</div></div>
+        <div class="kpi-card"><div class="kpi-val amber" id="kpi-fila">—</div><div class="kpi-lbl">Fila média (pronto→início)</div></div>
+        <div class="kpi-card"><div class="kpi-val purple" id="kpi-exame">—</div><div class="kpi-lbl">Duração média do exame</div></div>
+        <div class="kpi-card"><div class="kpi-val" id="kpi-top" style="font-size:14px;margin-top:4px">—</div><div class="kpi-lbl">Médico mais ativo</div></div>
+      </div>
+      <div class="table-wrap"><div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th>Paciente</th><th>Sala</th><th>Médico</th>
+            <th>Pronto</th><th>Início</th><th>Término</th>
+            <th>T. Fila</th><th>T. Exame</th>
+          </tr></thead>
+          <tbody id="r-tbody"></tbody>
+        </table>
+      </div></div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -518,8 +601,25 @@ let audioEnabled=true, prevRoomState={}, currentTab='terminal';
 const DEFAULT_DOCTORS=['Amanda Tormin','Beatriz Borges','Fernanda Lauar','Fernando Costa','Hugo Gama','Lara Mori','Larissa Maia','Marcos Fiorotto','Murilo Eugênio','Olavo Nakamura','Poliana Parreira','Pedro Hasimoto','Pedro Paulo','Pedro Rios','Rafael Dangoni','Roberto Brasil','Túlio Gama','Veluma Teixeira','Victor Oliveira'];
 let doctorsList=[], tempDoctors=[];
 let waitingList=[];
+let reportData=[];
+let activeExams={};
 
 function now(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function nowFull(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function todayStr(){return new Date().toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'});}
+function diffSec(a,b){
+  try{
+    const[ah,am,as_]=a.split(':').map(Number);
+    const[bh,bm,bs]=b.split(':').map(Number);
+    const d=(bh*3600+bm*60+bs)-(ah*3600+am*60+as_);
+    return d>0?d:null;
+  }catch(e){return null;}
+}
+function fmtSec(s){
+  if(!s||s<=0) return '—';
+  const m=Math.floor(s/60),sec=s%60;
+  return m>0?m+'m'+String(sec).padStart(2,'0')+'s':sec+'s';
+}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function showToast(msg,type=''){
@@ -531,15 +631,16 @@ function showToast(msg,type=''){
 // ── TABS ──
 function switchTab(tab){
   currentTab=tab;
-  document.getElementById('screen-terminal').classList.toggle('active',tab==='terminal');
-  document.getElementById('screen-painel').classList.toggle('active',tab==='painel');
-  document.getElementById('tab-terminal').classList.toggle('active',tab==='terminal');
-  document.getElementById('tab-painel').classList.toggle('active',tab==='painel');
+  ['terminal','painel','relatorios'].forEach(s=>{
+    document.getElementById('screen-'+s).classList.toggle('active',s===tab);
+    document.getElementById('tab-'+s).classList.toggle('active',s===tab);
+  });
   const tbM=document.getElementById('tb-manage');
   const tbA=document.getElementById('tb-audio');
   if(tbM) tbM.style.display=tab==='terminal'?'flex':'none';
   if(tbA) tbA.style.display=tab==='painel'?'flex':'none';
   if(tab==='painel') document.getElementById('tab-badge').style.display='none';
+  if(tab==='relatorios') renderReport();
 }
 
 // ── AUDIO ──
@@ -625,6 +726,7 @@ function initFirebase(url,key,project){
     db=firebase.database();
     db.ref('uso/state').on('value',snap=>renderFromState(snap.val()||{}));
     db.ref('uso/waiting').on('value',snap=>{waitingList=snap.val()||[];renderWaitingList();});
+    db.ref('uso/report').on('value',snap=>{reportData=snap.val()||[];if(currentTab==='relatorios')renderReport();});
     db.ref('.info/connected').on('value',snap=>setConnected(!!snap.val(),snap.val()?'Online':'Reconectando...'));
   }catch(err){setConnected(false,'Erro');showToast('Erro Firebase: '+err.message);}
 }
@@ -851,17 +953,15 @@ function signalReady(){
   const exam=document.getElementById('inp-exam').value;
   if(!patient){document.getElementById('inp-patient').focus();showToast('Informe o paciente');return;}
   if(!exam){document.getElementById('inp-exam').focus();showToast('Selecione o médico');return;}
+  const tPronto=nowFull();
+  activeExams[roomId]={patient,room:getRoomLabel(roomId),medico:exam,tEntrada:tPronto,tPronto,tInicio:null,tFim:null,date:todayStr()};
   const ok=writeState(roomId,{status:'ready',patient,exam,time:now(),updatedAt:Date.now()});
   if(ok){document.getElementById('inp-patient').value='';showToast(`${getRoomLabel(roomId)} — paciente pronto!`,'green');}
 }
 
 function startExam(roomId){
-  const state=demoMode?demoState:(db?null:null);
-  const rooms=(demoMode?demoState.rooms:null)||{};
-  // Get current room data to keep patient/exam info
-  let r=rooms[roomId]||{};
+  if(activeExams[roomId]) activeExams[roomId].tInicio=nowFull();
   if(!demoMode&&db){
-    // For Firebase, read then write
     db.ref(`uso/state/rooms/${roomId}`).once('value',snap=>{
       const cur=snap.val()||{};
       db.ref(`uso/state/rooms/${roomId}`).set({...cur,status:'busy',time:now(),updatedAt:Date.now()});
@@ -869,13 +969,120 @@ function startExam(roomId){
     showToast(`${getRoomLabel(roomId)} — exame iniciado`,'blue');
     return;
   }
+  const r=(demoState.rooms||{})[roomId]||{};
   writeState(roomId,{...r,status:'busy',time:now(),updatedAt:Date.now()});
   showToast(`${getRoomLabel(roomId)} — exame iniciado`,'blue');
 }
 
 function finishExam(roomId){
+  const tFim=nowFull();
+  const ae=activeExams[roomId];
+  if(ae){
+    ae.tFim=tFim;
+    if(!ae.tInicio) ae.tInicio=tFim;
+    saveReportRecord({...ae});
+    delete activeExams[roomId];
+  }
   const ok=writeState(roomId,{status:'free',_done:true});
   if(ok) showToast(`${getRoomLabel(roomId)} — exame concluído ✓`,'green');
+}
+
+function saveReportRecord(rec){
+  reportData.unshift(rec);
+  if(db) db.ref('uso/report').set(reportData.slice(0,1000));
+  if(currentTab==='relatorios') renderReport();
+}
+
+function renderReport(){
+  const fMed=document.getElementById('r-filter-medico')?.value||'';
+  const fSala=document.getElementById('r-filter-sala')?.value||'';
+  const fData=document.getElementById('r-filter-data')?.value||'';
+
+  // Update date filter options
+  const dates=[...new Set(reportData.map(r=>r.date).filter(Boolean))].sort().reverse();
+  const selData=document.getElementById('r-filter-data');
+  if(selData){
+    const cur=selData.value;
+    selData.innerHTML='<option value="">Todos os dias</option>'+dates.map(d=>`<option value="${escHtml(d)}"${d===cur?' selected':''}>${escHtml(d)}</option>`).join('');
+  }
+  // Update doctor filter options
+  const selMed=document.getElementById('r-filter-medico');
+  if(selMed){
+    const cur=selMed.value;
+    const docs=[...new Set(reportData.map(r=>r.medico).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt'));
+    selMed.innerHTML='<option value="">Todos os médicos</option>'+docs.map(d=>`<option value="${escHtml(d)}"${d===cur?' selected':''}>${escHtml(d)}</option>`).join('');
+  }
+
+  let data=reportData;
+  if(fMed) data=data.filter(r=>r.medico===fMed);
+  if(fSala) data=data.filter(r=>r.room===fSala);
+  if(fData) data=data.filter(r=>r.date===fData);
+
+  document.getElementById('r-subtitle').textContent=data.length+' registro(s)'+(fData?' — '+fData:'');
+
+  // KPIs
+  const avg=arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
+  const filas=data.map(r=>diffSec(r.tPronto,r.tInicio)).filter(Boolean);
+  const exames=data.map(r=>diffSec(r.tInicio,r.tFim)).filter(Boolean);
+  const dc={};data.forEach(r=>{if(r.medico)dc[r.medico]=(dc[r.medico]||0)+1;});
+  const topDoc=Object.keys(dc).sort((a,b)=>dc[b]-dc[a])[0]||'—';
+
+  document.getElementById('kpi-total').textContent=data.length;
+  document.getElementById('kpi-fila').textContent=fmtSec(avg(filas));
+  document.getElementById('kpi-exame').textContent=fmtSec(avg(exames));
+  document.getElementById('kpi-top').textContent=topDoc==='—'?'—':topDoc.split(' ').slice(0,2).join(' ');
+
+  // Table
+  const tbody=document.getElementById('r-tbody');
+  if(!data.length){
+    tbody.innerHTML='<tr><td colspan="8" class="t-empty">Nenhum exame registrado ainda</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map(r=>{
+    const sE=diffSec(r.tEntrada,r.tPronto), sF=diffSec(r.tPronto,r.tInicio), sX=diffSec(r.tInicio,r.tFim);
+    return '<tr>'+
+      '<td><strong>'+escHtml(r.patient)+'</strong></td>'+
+      '<td class="td-mono">'+escHtml(r.room)+'</td>'+
+      '<td>'+escHtml(r.medico)+'</td>'+
+      '<td class="td-mono">'+escHtml(r.tPronto||'—')+'</td>'+
+      '<td class="td-mono">'+escHtml(r.tInicio||'—')+'</td>'+
+      '<td class="td-mono">'+escHtml(r.tFim||'—')+'</td>'+
+      '<td><span class="td-chip amber">'+fmtSec(sF)+'</span></td>'+
+      '<td><span class="td-chip purple">'+fmtSec(sX)+'</span></td>'+
+    '</tr>';
+  }).join('');
+}
+
+function clearReport(){
+  if(!confirm('Apagar todos os registros de relatório?')) return;
+  reportData=[];
+  if(db) db.ref('uso/report').set([]);
+  renderReport();
+  showToast('Relatório limpo');
+}
+
+function exportCSV(){
+  const fMed=document.getElementById('r-filter-medico')?.value||'';
+  const fSala=document.getElementById('r-filter-sala')?.value||'';
+  const fData=document.getElementById('r-filter-data')?.value||'';
+  let data=reportData;
+  if(fMed) data=data.filter(r=>r.medico===fMed);
+  if(fSala) data=data.filter(r=>r.room===fSala);
+  if(fData) data=data.filter(r=>r.date===fData);
+  const hdr='Data,Paciente,Sala,Medico,Pronto,Inicio,Termino,T.Fila,T.Exame\n';
+  const rows=data.map(r=>{
+    return [r.date,r.patient,r.room,r.medico,r.tPronto,r.tInicio,r.tFim,
+      fmtSec(diffSec(r.tPronto,r.tInicio)),
+      fmtSec(diffSec(r.tInicio,r.tFim))
+    ].map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(',');
+  }).join('\n');
+  const blob=new Blob(['﻿'+hdr+rows],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='exames_'+todayStr().replace(/\//g,'-')+'.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ── CLOCK ──
@@ -897,6 +1104,7 @@ window.addEventListener('load',()=>{
   document.getElementById('tb-manage').style.display='flex';
   document.getElementById('tb-audio').style.display='none';
   initFirebase(FB_CONFIG.databaseURL, FB_CONFIG.apiKey, FB_CONFIG.projectId);
+  // reportData loaded via Firebase listener
   loadDoctors();
   loadWaiting();
   renderFromState({});
