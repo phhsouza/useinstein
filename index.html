@@ -158,6 +158,7 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
 .pr-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;opacity:0.2;padding:10px 0;}
 .pr-patient{font-size:16px;font-weight:600;color:var(--td);letter-spacing:-0.01em;margin-bottom:4px;line-height:1.2;}
 .pr-exam{font-size:12px;color:var(--td2);margin-bottom:8px;}
+.pr-origem{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:500;background:rgba(255,255,255,0.08);color:var(--td2);margin-bottom:6px;}
 .pr-time{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.05);border:1px solid var(--bd-dark);padding:3px 9px;border-radius:20px;font-size:10px;font-family:var(--mono);color:var(--td2);margin-bottom:12px;}
 .pbtns{display:flex;flex-direction:column;gap:8px;}
 .btn-start{width:100%;padding:10px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
@@ -238,7 +239,9 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
   .form-fields{flex-direction:row;align-items:flex-end;}
   .form-field{flex:1;}
   .form-row-2{display:contents;}
-  .form-row-2 .form-field{flex:0 0 auto;width:130px;}
+  .form-row-2 .form-field{flex:0 0 130px;width:130px;}
+  .form-row-2 .form-field:nth-child(2){flex:1.5;width:auto;}
+  .form-row-2 .form-field:nth-child(3){flex:0 0 120px;width:120px;}
   .btn-primary{width:auto;height:40px;font-size:14px;margin-top:0;}
   input[type="text"],select{height:40px;font-size:14px;}
   .rooms-grid-p{grid-template-columns:repeat(4,1fr);gap:16px;}
@@ -488,6 +491,16 @@ tbody td{padding:10px 12px;font-size:13px;color:var(--g900);vertical-align:middl
               <label class="form-label">Médico</label>
               <select id="inp-exam"><option value="">Selecione...</option></select>
             </div>
+            <div class="form-field">
+              <label class="form-label">Origem</label>
+              <select id="inp-origem">
+                <option value="">Selecione...</option>
+                <option value="Check-up">Check-up</option>
+                <option value="Externo">Externo</option>
+                <option value="Interno">Interno</option>
+                <option value="PA">PA</option>
+              </select>
+            </div>
           </div>
           <button class="btn-primary" onclick="signalReady()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -579,7 +592,7 @@ tbody td{padding:10px 12px;font-size:13px;color:var(--g900);vertical-align:middl
       <div class="table-wrap"><div class="table-scroll">
         <table>
           <thead><tr>
-            <th>Paciente</th><th>Sala</th><th>Médico</th>
+            <th>Paciente</th><th>Sala</th><th>Médico</th><th>Origem</th>
             <th>Pronto</th><th>Início</th><th>Término</th>
             <th>T. Fila</th><th>T. Exame</th>
           </tr></thead>
@@ -778,7 +791,7 @@ function renderFromState(state){
     c.innerHTML=`
       <div class="rh"><div class="rnum">${label}</div>${pillHtml}</div>
       <div class="rpatient">${st!=='free'?escHtml(r.patient||''):'—'}</div>
-      <div class="rexam">${st!=='free'?escHtml(r.exam||''):'Disponível'}</div>
+      <div class="rexam">${st!=='free'?escHtml(r.exam||''):'Disponível'}${st!=='free'&&r.origem?' · '+escHtml(r.origem):''}</div>
       ${st!=='free'?`<div class="rtime">${st==='ready'?'Pronto':'Em exame'} às ${r.time||''}</div>`:''}
       ${btns}`;
     gridT.appendChild(c);
@@ -807,6 +820,7 @@ function renderFromState(state){
       body=`
         <div class="pr-patient">${escHtml(r.patient||'')}</div>
         <div class="pr-exam">Dr(a). ${escHtml(r.exam||'')}</div>
+        ${r.origem?`<div class="pr-origem">${escHtml(r.origem)}</div>`:''}
         <div class="pr-time">⏱ ${r.time||'--:--'}</div>
         <div class="pbtns">${actionBtn}</div>`;
     }
@@ -951,11 +965,12 @@ function signalReady(){
   const patient=document.getElementById('inp-patient').value.trim();
   const roomId=parseInt(document.getElementById('inp-room').value);
   const exam=document.getElementById('inp-exam').value;
+  const origem=document.getElementById('inp-origem').value;
   if(!patient){document.getElementById('inp-patient').focus();showToast('Informe o paciente');return;}
   if(!exam){document.getElementById('inp-exam').focus();showToast('Selecione o médico');return;}
   const tPronto=nowFull();
-  activeExams[roomId]={patient,room:getRoomLabel(roomId),medico:exam,tEntrada:tPronto,tPronto,tInicio:null,tFim:null,date:todayStr()};
-  const ok=writeState(roomId,{status:'ready',patient,exam,time:now(),updatedAt:Date.now()});
+  activeExams[roomId]={patient,room:getRoomLabel(roomId),medico:exam,origem,tEntrada:tPronto,tPronto,tInicio:null,tFim:null,date:todayStr()};
+  const ok=writeState(roomId,{status:'ready',patient,exam,origem,time:now(),updatedAt:Date.now()});
   if(ok){document.getElementById('inp-patient').value='';showToast(`${getRoomLabel(roomId)} — paciente pronto!`,'green');}
 }
 
@@ -1035,7 +1050,7 @@ function renderReport(){
   // Table
   const tbody=document.getElementById('r-tbody');
   if(!data.length){
-    tbody.innerHTML='<tr><td colspan="8" class="t-empty">Nenhum exame registrado ainda</td></tr>';
+    tbody.innerHTML='<tr><td colspan="9" class="t-empty">Nenhum exame registrado ainda</td></tr>';
     return;
   }
   tbody.innerHTML=data.map(r=>{
@@ -1044,6 +1059,7 @@ function renderReport(){
       '<td><strong>'+escHtml(r.patient)+'</strong></td>'+
       '<td class="td-mono">'+escHtml(r.room)+'</td>'+
       '<td>'+escHtml(r.medico)+'</td>'+
+      '<td><span class="td-chip blue">'+escHtml(r.origem||'—')+'</span></td>'+
       '<td class="td-mono">'+escHtml(r.tPronto||'—')+'</td>'+
       '<td class="td-mono">'+escHtml(r.tInicio||'—')+'</td>'+
       '<td class="td-mono">'+escHtml(r.tFim||'—')+'</td>'+
@@ -1069,9 +1085,9 @@ function exportCSV(){
   if(fMed) data=data.filter(r=>r.medico===fMed);
   if(fSala) data=data.filter(r=>r.room===fSala);
   if(fData) data=data.filter(r=>r.date===fData);
-  const hdr='Data,Paciente,Sala,Medico,Pronto,Inicio,Termino,T.Fila,T.Exame\n';
+  const hdr='Data,Paciente,Sala,Medico,Origem,Pronto,Inicio,Termino,T.Fila,T.Exame\n';
   const rows=data.map(r=>{
-    return [r.date,r.patient,r.room,r.medico,r.tPronto,r.tInicio,r.tFim,
+    return [r.date,r.patient,r.room,r.medico,r.origem||'',r.tPronto,r.tInicio,r.tFim,
       fmtSec(diffSec(r.tPronto,r.tInicio)),
       fmtSec(diffSec(r.tInicio,r.tFim))
     ].map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(',');
