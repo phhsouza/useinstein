@@ -298,6 +298,10 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
 .check-pill.outro .check-dot{background:#7C3AED;}
 .check-pill.agua{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
 .check-pill.agua .check-dot{background:var(--green);}
+.check-pill.bcheia{border-color:var(--red);background:var(--red-light);color:var(--red);}
+.check-pill.bcheia .check-dot{background:var(--red);}
+.check-pill.atenc{border-color:var(--red);background:var(--red-light);color:var(--red);}
+.check-pill.atenc .check-dot{background:var(--red);}
 .wait-go-btn{height:26px;padding:0 10px;background:var(--green);color:white;border:none;border-radius:var(--r-sm);font-size:11px;font-weight:600;font-family:var(--font);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0;}
 .wait-go-btn:hover{background:var(--green-dark);}
 .wait-go-btn svg{width:12px;height:12px;fill:none;stroke:white;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
@@ -313,6 +317,8 @@ input[type="text"]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0
 .painel-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap;}
 .painel-chip.ench{background:rgba(239,159,39,0.2);color:var(--amber);border:1px solid rgba(239,159,39,0.3);}
 .painel-chip.outro{background:rgba(124,58,237,0.2);color:#A78BFA;border:1px solid rgba(124,58,237,0.3);}
+.painel-chip.bcheia{background:rgba(226,75,74,0.2);color:var(--red);border:1px solid rgba(226,75,74,0.3);}
+.painel-chip.atenc{background:rgba(226,75,74,0.2);color:var(--red);border:1px solid rgba(226,75,74,0.3);}
 .painel-chip.agua{background:rgba(29,158,117,0.2);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
 .painel-wait-empty{text-align:center;padding:20px;color:var(--td3);font-size:13px;}
 
@@ -866,7 +872,7 @@ function syncWaitingToFirebase(){
 function addWaiting(){
   const inp=document.getElementById('inp-wait-id'),label=inp.value.trim();
   if(!label){inp.focus();return;}
-  waitingList.push({id:Date.now(),label,enchendo:false,outro:false,aguardando:false});
+  waitingList.push({id:Date.now(),label,enchendo:false,outro:false,aguardando:false,bcheia:false,atenc:false});
   inp.value='';saveWaiting();renderWaitingList();
 }
 function toggleCheck(id,field){
@@ -879,6 +885,7 @@ function removeWaiting(id){
 function promoteWaiting(id){
   const p=waitingList.find(p=>p.id===id);if(!p)return;
   document.getElementById('inp-patient').value=p.label;
+  removeWaiting(id);
   document.querySelector('.form-card').scrollIntoView({behavior:'smooth',block:'center'});
   showToast('Preencha sala e médico e clique em Paciente pronto','green');
 }
@@ -899,6 +906,8 @@ function renderWaitingList(){
         <span class="check-pill${p.enchendo?' ench':''}" onclick="toggleCheck(${p.id},'enchendo')"><span class="check-dot"></span>Enchendo bexiga</span>
         <span class="check-pill${p.outro?' outro':''}" onclick="toggleCheck(${p.id},'outro')"><span class="check-dot"></span>Em outro exame</span>
         <span class="check-pill${p.aguardando?' agua':''}" onclick="toggleCheck(${p.id},'aguardando')"><span class="check-dot"></span>Aguardando sala</span>
+        <span class="check-pill${p.bcheia?' bcheia':''}" onclick="toggleCheck(${p.id},'bcheia')"><span class="check-dot"></span>Bexiga cheia</span>
+        <span class="check-pill${p.atenc?' atenc':''}" onclick="toggleCheck(${p.id},'atenc')"><span class="check-dot"></span>Atenção especial</span>
       </div>
       <button class="wait-go-btn" onclick="promoteWaiting(${p.id})">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pronto
@@ -914,6 +923,8 @@ function renderPainelWaiting(){
     let chips='';
     if(p.enchendo) chips+=`<span class="painel-chip ench">🟡 Enchendo bexiga</span>`;
     if(p.outro) chips+=`<span class="painel-chip outro">🟣 Em outro exame</span>`;
+    if(p.bcheia) chips+=`<span class="painel-chip bcheia">🔴 Bexiga cheia</span>`;
+    if(p.atenc) chips+=`<span class="painel-chip atenc">🔴 Atenção especial</span>`;
     if(p.aguardando) chips+=`<span class="painel-chip agua">🟢 Aguardando sala</span>`;
     if(!chips) chips=`<span style="font-size:11px;color:var(--td3)">Sem status</span>`;
     return `<div class="painel-wait-row">
